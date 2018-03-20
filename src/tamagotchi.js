@@ -23,8 +23,25 @@ export class Tamagotchi {
   setHunger() {
       setInterval(() => {
         this.foodLevel--;
-      }, 720); //2 hours/120 minutes
+      }, 720); //each 12 minutes/720 seconds -1; 2 hours/120 minutes/7200seconds will be 0
     }
+
+  didYouGetEaten() {
+  if (this.foodLevel >= 0) {
+    return `I'm happy`;//No, I'm not hungry.
+  } else if ((this.foodLevel < 0) && (this.foodLevel >= -10)) {
+    return `I'm hungry! Could you give me some pasta?`;
+  } else if ((this.foodLevel < -10) && (this.foodLevel >= -30)) {
+    return `Alive but angry and hungry!`;
+  } else {
+    return `I'm mad and leave to find food!`;//Yes, feed me please.
+    }
+  }
+
+
+  feed() {
+    this.foodLevel = 10;
+  }
 
   setActivity() {
       setInterval(() => {
@@ -32,23 +49,36 @@ export class Tamagotchi {
       }, 1440);//4 hours/240 minutes
     }
 
+  didYouGetActivity() {
+  if (this.playLevel > 0) {
+    return false;//No, I don't need to get out.
+    } else {
+    return true;//Yes, bring me out.
+    }
+  }
+
+  play() {
+    this.playLevel = 10;
+  }
+
   setRest() {
       setInterval(() => {
         this.sleepLevel--;
       }, 2880);//8 hours/480 minutes
     }
 
-  didYouGetEaten() {
-  if (this.foodLevel > 0) {
-    return false;
+  needsSleep() {
+  if (this.sleepLevel > 0) {
+    return false;//No, I don't need to sleep now.
     } else {
-    return true;
+    return true;//Yes, I really want to sleep.
     }
   }
 
-  // feed() {
-  //   this.foodLevel = 10;
-  // }
+  sleep() {
+    this.sleepLevel = 10;
+  }
+
 
 
 }

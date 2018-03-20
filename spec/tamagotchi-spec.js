@@ -6,12 +6,17 @@ describe('tamagotchi', function() {
    beforeEach(function() {
      jasmine.clock().install();
      cutie.setHunger();
+     cutie.didYouGetEaten()
      cutie.setActivity();
+     cutie.didYouGetActivity()
      cutie.setRest();
-     // utilize setHunger()
+     cutie.playLevel = 10;
+     cutie.sleepLevel = 10;
+
   });
 
     afterEach(function() {
+
     jasmine.clock().uninstall();
   });
 
@@ -28,20 +33,50 @@ describe('tamagotchi', function() {
     expect(cutie.sleepLevel).toEqual(9);
 
   });
-  it('should get very hungry if the food level drops below zero', function() {
+  it('should get happy if the food level above or equal to zero', function() {
   cutie.foodLevel = 1;
-  expect(cutie.didYouGetEaten()).toEqual(false);
+  expect(cutie.didYouGetEaten()).toEqual(`I'm happy`);
   });
 
-  it('should get very hungry if 720 seconds pass without feeding', function() {
-    jasmine.clock().tick(6481);
-    expect(cutie.didYouGetEaten()).toEqual(true);
+  it('should get hungry if 7200 seconds pass and still in 14400 seconds without feeding', function() {
+    jasmine.clock().tick(7201);
+    expect(cutie.didYouGetEaten()).toEqual(`I'm hungry! Could you give me some pasta?`);
   });
 
-  // it('should have a food level of ten if it is fed', function() {
-  //   jasmine.clock().tick(9001);
-  //   fuzzy.feed();
-  //   expect(fuzzy.foodLevel).toEqual(10);
-  // });
+  it('should get angry if 14400 seconds pass and still in 28800 seconds without feeding', function() {
+    jasmine.clock().tick(14401);
+    expect(cutie.didYouGetEaten()).toEqual(`Alive but angry and hungry!`);
+  });
+
+  it('should get mad if 28800 seconds pass  without feeding', function() {
+    jasmine.clock().tick(28801);
+    expect(cutie.didYouGetEaten()).toEqual(`I'm mad and leave to find food!`);
+  });
+
+  it('should have a food level of ten if it is fed', function() {
+    cutie.feed();
+    expect(cutie.foodLevel).toEqual(10);
+  });
+
+  it('should get happy if within 7200 seconds', function() {
+    console.log("PLAY LEVEL ++++++++++++++++++++++"+cutie.playLevel);
+    jasmine.clock().tick(1);
+    expect(cutie.didYouGetActivity()).toEqual(false);
+  });
+
+  it('should have a play level of ten if it play', function() {
+    cutie.play();
+    expect(cutie.playLevel).toEqual(10);
+  });
+
+  it('should get want to go to bed if 28801 seconds pass without sleep', function() {
+    jasmine.clock().tick(28801);
+    expect(cutie.needsSleep()).toEqual(true);
+  });
+
+  it('should have a sleep level of ten if it sleep', function() {
+    cutie.sleep();
+    expect(cutie.sleepLevel).toEqual(10);
+  });
 
 });
